@@ -4,7 +4,7 @@ namespace App\Exceptions;
 
 use Throwable;
 use Illuminate\Support\Str;
-use App\Traits\jsonResponser;
+use App\Traits\JsonResponser;
 use Illuminate\Database\QueryException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Session\TokenMismatchException;
@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 
 class Handler extends ExceptionHandler
 {
-    use jsonResponser;
+    use JsonResponser;
     /**
      * A list of the exception types that are not reported.
      *
