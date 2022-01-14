@@ -94,10 +94,10 @@ class Handler extends ExceptionHandler
             return redirect()->back()->withInput($request->input());
         }
 
-        else if(config('app.debug')){
+        // else if(config('app.debug')){
 
             return parent::render($request, $e);
-        }
+        // }
 
         return $this->errorResponse('Unexpected error. Try again later',500);
     }

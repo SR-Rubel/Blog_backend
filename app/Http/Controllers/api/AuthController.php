@@ -14,10 +14,10 @@ class AuthController extends Controller
         ]);
         $credentials=$request->only(['email','password']);
         if(!auth()->attempt($credentials)){
-            return response()->json(['status'=>0,'msg'=>'invalid crediantials'],401);
+            return $this->customResponse(['status'=>0,'msg'=>'invalid crediantials'],401);
         }
         $token=auth()->user()->createToken("access_token")->plainTextToken;
-        return response()->json(['status'=>1,'msg'=>'logged in!','token'=>$token],200);
+        return $this->customResponse(['status'=>1,'msg'=>'logged in!','token'=>$token]);
     }
 
     public function logout(){
