@@ -16,7 +16,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        
+        $post=Post::all();
+        return $this->mutliResponse($post);
     }
 
     /**
