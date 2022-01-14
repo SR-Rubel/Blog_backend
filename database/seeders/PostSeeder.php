@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Post;
+use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 
 class PostSeeder extends Seeder
@@ -13,6 +15,14 @@ class PostSeeder extends Seeder
      */
     public function run()
     {
-        //
+        Post::create([
+            'title'=>"Lorem ipsum dolor",
+            'body'=>"Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur eum officia nostrum asperiores adipisci maiores, sed delectus est numquam laboriosam dolore rem debitis cum obcaecati? Voluptates",
+            'slug'=>uniqid(),
+            'image'=>'1.jpg',
+            'thumbnail'=>'2.jpg',
+
+
+        ]);
     }
 }

@@ -13,6 +13,6 @@ class Post extends Model
         'slug',
         'image',
         'body',
-        'thrumbnail',
+        'thumbnail',
     ];
 }
