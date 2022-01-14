@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Intervention\Image\Facades\Image;
 
 class PostController extends Controller
 {
@@ -32,7 +33,17 @@ class PostController extends Controller
         ]);
 
         $post=$request->all();
+        $image=$request->image;
+        $post['image']=$image;
+        if($image){
+            $thrumbnail_f=$image_f=uniqid();
+            Image::make($image)->save(public_path('images/original/'.$image_f.'.jpg').'',100,'jpg');
+            Image::make($image)->resize(300,200)->save(public_path('images/thrumbnail/'.$image_f.'_thrumbnail.jpg').'',100,'jpg');
+            $post['image']=$image_f.'.jpg';
+            $post['thrumbnail']=$thrumbnail_f.'_thrumbnail.jpg';
+        }
         Post::create($post);
+        return $this->customResponse(['msg'=>'post created']);
     }
 
     /**
