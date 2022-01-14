@@ -37,8 +37,8 @@ class PostController extends Controller
         $post['image']=$image;
         if($image){
             $thrumbnail_f=$image_f=uniqid();
-            Image::make($image)->save(public_path('images/original/'.$image_f.'.jpg').'',100,'jpg');
-            Image::make($image)->resize(300,200)->save(public_path('images/thrumbnail/'.$image_f.'_thrumbnail.jpg').'',100,'jpg');
+            Image::make($image)->save(public_path('storage/images/original/'.$image_f.'.jpg').'',100,'jpg');
+            Image::make($image)->resize(300,200)->save(public_path('storage/images/thrumbnail/'.$image_f.'_thrumbnail.jpg').'',100,'jpg');
             $post['image']=$image_f.'.jpg';
             $post['thrumbnail']=$thrumbnail_f.'_thrumbnail.jpg';
         }
@@ -54,7 +54,11 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
+        $image='';
+        if($post->image) $image=asset('storage/images/thrumbnail/'.$post->thrumbnail);
+        $post['image_link']= $image;
         return $this->oneResponse($post);
+        // return $this->customResponse(['image'=>$image]);
     }
 
     /**
@@ -64,9 +68,36 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Post $post)
     {
-        //
+        $request->validate([
+            'title'=>'required',
+            'slug' =>'unique:posts',
+        ]);
+
+        if($request->slug )$post->slug= $request->slug;
+        if($request->title) $post->title= $request->title;
+        if($request->body) $post->body= $request->body;
+
+        if($request->image){
+            $image='';
+            $thrumbnail_f=$image_f=uniqid();
+            Image::make($image)->save(public_path('storage/images/original/'.$image_f.'.jpg').'',100,'jpg');
+            Image::make($image)->resize(300,200)->save(public_path('storage/images/thrumbnail/'.$image_f.'_thrumbnail.jpg').'',100,'jpg');
+
+            // deleting existing image
+            // if(file_exists(public_path('storage/images/original/').$post->image))
+            // {
+            //     unlink(public_path('storage/images/original/').$post->image);
+            //     unlink(public_path('storage/images/thrumbnail/').$post->thrumbnail);
+            // }
+
+            $post['image']=$image_f.'.jpg';
+            $post['thrumbnail']=$thrumbnail_f.'_thrumbnail.jpg';
+        }
+       $res = $post->save();
+        return $this->customResponse(['msg'=>'post updated']);
+        
     }
 
     /**
@@ -77,7 +108,13 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        $post->delete();
+        $deleted_post=$post->delete();
+        if(file_exists(public_path('storage/images/original/').$post->image))
+        {
+            unlink(public_path('storage/images/original/').$post->image);
+            unlink(public_path('storage/images/thrumbnail/').$post->thrumbnail);
+        }
+
         return $this->customResponse(['msg'=>'post deleted!']);
     }
 }
