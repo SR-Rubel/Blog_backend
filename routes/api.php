@@ -22,14 +22,14 @@ Route::post('login',[AuthController::class,'login']);
 // -------------log out----------------
 Route::middleware(['auth:sanctum'])->group(function(){
     Route::get('logout',[AuthController::class,'logout']);
+    Route::apiResource('posts',PostController::class);
+    Route::get('posts/slug/{slug}',[PostController::class,'showBySlug']);
 });
 
-Route::apiResource('posts',PostController::class);
 Route::get('/posts/delete/{post}',[PostController::class,'destroy']);
 Route::post('/posts/create',[PostController::class,'store']);
 // Route::get('image',[PostController::class,'image']);
 // --------post show by slug------------
-Route::get('posts/slug/{slug}',[PostController::class,'showBySlug']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
