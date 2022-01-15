@@ -16,10 +16,9 @@ class PostController extends Controller
      */
     public function index()
     {
-        $post=Post::all();
-        return $this->mutliResponse($post);
+        $post=Post::paginate(15);
+        return $this->customResponse(["data"=>$post]);
     }
-
     /**
      * Store a newly created resource in storage.
      *

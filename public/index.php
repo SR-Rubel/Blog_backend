@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 
 define('LARAVEL_START', microtime(true));
 
+
 /*
 |--------------------------------------------------------------------------
 | Check If The Application Is Under Maintenance
@@ -30,6 +31,8 @@ if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php'))
 | into the script here so we don't need to manually load our classes.
 |
 */
+header('Access-Control-Allow-Methods: *');
+header('Access-Control-Allow-Headers: Origin, X-Requested-With,Authorization, Content-Type, Accept');
 
 require __DIR__.'/../vendor/autoload.php';
 

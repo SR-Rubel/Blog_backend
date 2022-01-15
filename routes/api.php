@@ -25,6 +25,8 @@ Route::middleware(['auth:sanctum'])->group(function(){
 });
 
 Route::apiResource('posts',PostController::class);
+Route::get('/posts/delete/{post}',[PostController::class,'destroy']);
+Route::post('/posts/create',[PostController::class,'store']);
 // Route::get('image',[PostController::class,'image']);
 // --------post show by slug------------
 Route::get('posts/slug/{slug}',[PostController::class,'showBySlug']);
