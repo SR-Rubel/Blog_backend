@@ -17,6 +17,10 @@ class PostController extends Controller
     public function index()
     {
         $post=Post::paginate(15);
+        $post->each(function($item,$key){
+            
+            $item->thumbnail= asset('storage/images/thumbnail/'.$item->thumbnail);
+        });
         return $this->customResponse(["data"=>$post]);
     }
     /**
